@@ -26,8 +26,7 @@ var $padActive = false; // 키패드 활성화 여부 global
 
                 switch (e) {
                     case 'x':
-                        // strItem += '<a href="javascript:;" class="back"><span>x</span></a>'
-                        strItem += '<a href="javascript:;" class="back"><img src="./dist/images/common/btn_keypad_back.png" alt="지우기"/></a>'
+                        strItem += '<a href="javascript:;" class="back"><span>x</span></a>'
                         break;
                     case 'ok':
                         strItem += '<a href="javascript:;" class="ok">입력완료</a>'
@@ -159,7 +158,8 @@ var $padActive = false; // 키패드 활성화 여부 global
                 var os = $el.offset();
                 var os_t = os.top;
                 var os_l = os.left;
-                if (!os_t || !$padActive) return;
+
+                if (!$padActive) return;
                 if ($(window).width() < 768) {
                     //$keyWrap.css("height", $wrapper.height());
                     $keyWrap.css({

@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title> jQuery numberKeypad demo</title>
+	<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/base-min.css"/>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="./dist/jquery.numberKeypad.css"/>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="./dist/jquery.numberKeypad.js"></script>
+</head>
+<body>
+	<div class="wrap">
+		demo! : <input type="text"/>
+	</div>
+
+	<script type="text/javascript">
+		$(function(){
+			$('input').numberKeypad({
+				wrap: '.wrap'
+			});
+		});
+	</script>
+</body>
+</html>

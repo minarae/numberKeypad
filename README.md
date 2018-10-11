@@ -1,15 +1,17 @@
 # numberKeypad
 jQuery기반 숫자 혹은 문자를 모바일(핸드폰) 자판처럼 구현.
 
+- 부트스트랩 4기반. (flex display 사용)
 - 프로젝트 중에 키패드형식 컴포넌트를 만들일이있어서 간단히 구현하였습니다.
 - 다중 input 가능한 형태이며, resize & 모바일 사이즈 반응.
 
 
 Usage
 -----
-* Include `jquery.numberKeypad.css` in head of your html document.
+* Include `jquery.numberKeypad.css`  at the bottom after bootStrap.
 
   ```
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="jquery.numberKeypad.css">
   ```
 
