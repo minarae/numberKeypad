@@ -84,6 +84,7 @@ var $padActive = false; // 키패드 활성화 여부 global
                     $wrapper.css("padding-bottom", 0);
                 }
                 $keypad.fadeOut(200, function () {
+						 $padActive = false;
                     $(this).find(".keypad").hide();
                 });
             });
