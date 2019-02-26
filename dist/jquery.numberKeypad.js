@@ -1,5 +1,5 @@
-/* == jquery keypad plugin == Version: 1.0.0, License: MIT License (MIT) */
-var $padActive = false; // 키패드 활성화 여부 global
+/* == jquery keypad plugin == Version: 1.0.1, License: MIT License (MIT) */
+var $padActive = false; // is active keypad visible :: global
 
 (function ($) {
     $.fn.numberKeypad = function (options) {
@@ -10,7 +10,7 @@ var $padActive = false; // 키패드 활성화 여부 global
             var self = $(elem);
             var strItem = '';
             var settings = $.extend({
-                wrap: '.wrapper',
+                wrap: 'body',
                 arrKeys: [1, 2, 3, 4, 5, 6, 7, 8, 9, 'x', 0, 'ok'],
                 login: false // custom page style :: padding
             }, options);
@@ -18,7 +18,7 @@ var $padActive = false; // 키패드 활성화 여부 global
             // parent container bind
             $wrapper = $(settings.wrap);
 
-            // 키패드 버튼 스트링 생성
+            // create keypad element string
             settings.arrKeys.forEach(function (e, i) {
                 if (i % 3 === 0) {
                     strItem += '<div class="item d-flex justify-content-between">'
@@ -29,7 +29,7 @@ var $padActive = false; // 키패드 활성화 여부 global
                         strItem += '<a href="javascript:;" class="back"><span>x</span></a>'
                         break;
                     case 'ok':
-                        strItem += '<a href="javascript:;" class="ok">입력완료</a>'
+                        strItem += '<a href="javascript:;" class="ok">OK</a>'
                         break;
                     default:
                         strItem += '<a href="javascript:;" class="n">' + e + '</a>'
@@ -41,7 +41,7 @@ var $padActive = false; // 키패드 활성화 여부 global
                 }
             });
 
-            var makeUnqId = ID(); // uniq data-id 생성
+            var makeUnqId = ID(); // insert attribute unique for data-id
             var $keyItems = $(strItem);
             var $keypad = $("<div>", {
                 'class': "keypad",
@@ -84,7 +84,7 @@ var $padActive = false; // 키패드 활성화 여부 global
                     $wrapper.css("padding-bottom", 0);
                 }
                 $keypad.fadeOut(200, function () {
-						 $padActive = false;
+					$padActive = false;
                     $(this).find(".keypad").hide();
                 });
             });
@@ -99,8 +99,8 @@ var $padActive = false; // 키패드 활성화 여부 global
                     fnSetKeypadHeight($el, $keyWrap);
                     return;
                 } else {
-                    // focusing 됐으면, 전체 키패드 숨김초기화
-                    $("div.keypad").hide();
+                    // after focusing, init keypad
+                    $(settings.wrap +">div.keypad").hide();
                 }
                 if ($(window).width() < 768) {
                     if ($keyWrap.is(":visible") || isOpen) {
@@ -145,7 +145,6 @@ var $padActive = false; // 키패드 활성화 여부 global
 
             $(document).on("click", handler);
 
-
             // input focus event
             self.attr("readonly", true)
                 .attr("data-idx", makeUnqId)
@@ -162,10 +161,9 @@ var $padActive = false; // 키패드 활성화 여부 global
 
                 if (!$padActive) return;
                 if ($(window).width() < 768) {
-                    //$keyWrap.css("height", $wrapper.height());
                     $keyWrap.css({
                         top: 'auto',
-                        left: 'calc(50% - 160px)'
+                        left: 'calc(50% - 125px)'
                     }).addClass('on');
 
                     var $getPb = $keyWrap.height() - ($wrapper.height() - os_t) + ($el.outerHeight() * 2);

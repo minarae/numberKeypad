@@ -39,8 +39,8 @@ You can customize the plugin by providing a hash with options on initialization.
 ```
 $(document).ready(function() {
     $('#keypad').numberKeypad({
-        wrap: $('.wrapper'),
-		  arrKeys: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'x', 'j', 'ok'],
+        wrap: '.wrapper',
+		arrKeys: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'x', 'j', 'ok'],
         login: false // 이하 커스텀 스타일
     });
 });
@@ -50,7 +50,7 @@ Default options:
 
 ```
 {
-	wrap: $('.wrapper'),
+	wrap: '.wrapper',
 	arrKeys: [1, 2, 3, 4, 5, 6, 7, 8, 9, 'x', 0, 'ok'],
 	login: false // 이하 커스텀 스타일
 }
