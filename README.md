@@ -39,7 +39,7 @@ You can customize the plugin by providing a hash with options on initialization.
 $(document).ready(function() {
     $('#keypad').numberKeypad({
         wrap: '.wrapper',
-		arrKeys: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'],
+        arrKeys: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'],
         login: false // 이하 커스텀 스타일
     });
 });
