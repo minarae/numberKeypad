@@ -53,7 +53,7 @@ Default options:
     arrKeys: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
     login: false, // custom page style :: padding
     isRandom: true, // Random Keypad
-    cancel: null,   // cancle시 콜백
+    cancel: null,   // cancel시 콜백
     callback: null, // ok시 콜백
     limit: 100,     // 자리 수 제한
 }
