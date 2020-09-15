@@ -49,7 +49,7 @@ Default options:
 
 ```
 {
-	wrap: 'body',
+    wrap: 'body',
     arrKeys: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
     login: false, // custom page style :: padding
     isRandom: true, // Random Keypad
