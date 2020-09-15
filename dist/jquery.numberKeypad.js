@@ -3,47 +3,63 @@ var $padActive = false; // is active keypad visible :: global
 
 (function ($) {
     $.fn.numberKeypad = function (options) {
-        var $this = this;
-        var $wrapper; // parent container
+        let $this = this;
+        let $wrapper; // parent container
 
         return $this.each(function (i, elem) {
-            var self = $(elem);
-            var strItem = '';
-            var settings = $.extend({
+            let self = $(elem);
+            //var strItem = '';
+            let settings = $.extend({
                 wrap: 'body',
-                arrKeys: [1, 2, 3, 4, 5, 6, 7, 8, 9, 'x', 0, 'ok'],
-                login: false // custom page style :: padding
+                arrKeys: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+                login: false, // custom page style :: padding
+                isRandom: true, // Random Keypad
+                cancel: null,   // cancle시 콜백
+                callback: null, // ok시 콜백
+                limit: 100,     // 자리 수 제한
             }, options);
 
             // parent container bind
             $wrapper = $(settings.wrap);
 
             // create keypad element string
-            settings.arrKeys.forEach(function (e, i) {
-                if (i % 3 === 0) {
-                    strItem += '<div class="item d-flex justify-content-between">'
-                }
+            let draw = function (keys, isRandom) {
+                let target = keys;
 
-                switch (e) {
-                    case 'x':
-                        strItem += '<a href="javascript:;" class="back"><span>x</span></a>'
-                        break;
-                    case 'ok':
-                        strItem += '<a href="javascript:;" class="ok">OK</a>'
-                        break;
-                    default:
-                        strItem += '<a href="javascript:;" class="n">' + e + '</a>'
-                        break;
+                // 랜덤으로 키를 섞어서 그릴 경우 키 배열을 랜덤하게 섞는다
+                if (isRandom === true) {
+                    target.sort(function () {
+                        return 0.5 - Math.random();
+                    });
                 }
+                let strItem = '';
+                target.forEach(function (e, i) {
+                    if (i % 3 === 0) {
+                        strItem += '<div class="item d-flex justify-content-between">'
+                    }
 
-                if (i % 3 === 2) {
-                    strItem += '</div>'
-                }
-            });
+                    // back button 위치 고정
+                    if (i === 9) {
+                        strItem += '<a href="javascript:;" class="back"><span>x</span></a>';
+                    }
+                    strItem += '<a href="javascript:;" class="n">' + e + '</a>'
+                    // ok button 위치 고정
+                    if (i === 9) {
+                        strItem += '<a href="javascript:;" class="ok">OK</a>';
+                    }
 
-            var makeUnqId = ID(); // insert attribute unique for data-id
-            var $keyItems = $(strItem);
-            var $keypad = $("<div>", {
+                    if (i % 3 === 2) {
+                        strItem += '</div>'
+                    }
+                });
+
+                return strItem;
+            }
+            let strItem = draw(settings.arrKeys, settings.isRandom);
+
+            let makeUnqId = ID(); // insert attribute unique for data-id
+            let $keyItems = $(strItem);
+            let $keypad = $("<div>", {
                 'class': "keypad",
                 'data-idx': makeUnqId
             }).appendTo($wrapper);
@@ -64,8 +80,10 @@ var $padActive = false; // is active keypad visible :: global
             $keypad.find("a.n").on("click", function (e) {
                 e.preventDefault();
 
-                var $val = $(this).text();
-                self.val(self.val() + $val);
+                // 제한된 자리만큼 입력이 이미 되었으면 더 이상 붙이지 않는다.
+                if (self.val().length < settings.limit) {
+                    self.val(self.val() + $(this).text());
+                }
             });
 
             // click back event
@@ -87,13 +105,18 @@ var $padActive = false; // is active keypad visible :: global
 					$padActive = false;
                     $(this).find(".keypad").hide();
                 });
+
+                // 완료시 콜백이 지정되어 있다면 콜백 함수 호출
+                if (typeof $(settings.callback) === 'function') {
+                    $(settings.callback)();
+                }
             });
 
             // set responsive position
             $.fn_reposition = function (el, isOpen) {
-                var $el = $(el);
-                var $idx = $el.data('idx');
-                var $keyWrap = $("div.keypad[data-idx='" + $idx + "']");
+                let $el = $(el);
+                let $idx = $el.data('idx');
+                let $keyWrap = $("div.keypad[data-idx='" + $idx + "']");
 
                 if (!isOpen) {
                     fnSetKeypadHeight($el, $keyWrap);
@@ -132,7 +155,7 @@ var $padActive = false; // is active keypad visible :: global
 
 
             /* dom click > keypad hide */
-            var handler = function(event){
+            let handler = function(event){
                 // if the target is a descendent of container do nothing
                 if($(event.target).is("input, .keypad, .keypad *")) return;
 
@@ -141,6 +164,10 @@ var $padActive = false; // is active keypad visible :: global
 
                 // dostuff
                 $("div.keypad").hide();
+                // keypad가 사라질 때 호출하여야 할 콜백이 있으면 호출하도록 지정
+                if (typeof $(settings.cancel) === 'function') {
+                    $(settings.cancel)();
+                }
             }
 
             $(document).on("click", handler);
@@ -155,9 +182,9 @@ var $padActive = false; // is active keypad visible :: global
                 });
 
             function fnSetKeypadHeight($el, $keyWrap) {
-                var os = $el.offset();
-                var os_t = os.top;
-                var os_l = os.left;
+                let os = $el.offset();
+                let os_t = os.top;
+                let os_l = os.left;
 
                 if (!$padActive) return;
                 if ($(window).width() < 768) {
@@ -166,7 +193,7 @@ var $padActive = false; // is active keypad visible :: global
                         left: 'calc(50% - 125px)'
                     }).addClass('on');
 
-                    var $getPb = $keyWrap.height() - ($wrapper.height() - os_t) + ($el.outerHeight() * 2);
+                    let $getPb = $keyWrap.height() - ($wrapper.height() - os_t) + ($el.outerHeight() * 2);
                     if ($getPb > 0) {
                         $wrapper.css("padding-bottom", $getPb);
                     }
@@ -184,7 +211,7 @@ var $padActive = false; // is active keypad visible :: global
         });
     };
 
-    var debounce = function (func) {
+    let debounce = function (func) {
         var timer;
         return function (event) {
             if (timer) clearTimeout(timer);
@@ -192,7 +219,7 @@ var $padActive = false; // is active keypad visible :: global
         };
     }
 
-    var ID = function () {
+    let ID = function () {
         // Math.random should be unique because of its seeding algorithm.
         // Convert it to base 36 (numbers + letters), and grab the first 9 characters
         // after the decimal.
